@@ -22,8 +22,13 @@ class MainActivity : AppCompatActivity() {
         // Set equal button listener
         btn_Equal.setOnClickListener {
             val expression = textCalcView.text.toString()
-            val result = eval(expression)
-            val resultString = "$expression = $result"
+            val resultString = try {
+                val result = eval(expression)
+                "$expression = $result"
+            } catch (e: Exception) {
+                Toast.makeText(this, "Error while evaluating the expression: ${e.message}", Toast.LENGTH_LONG).show()
+                "$expression = Error!"
+            }
             textInfoView.text = resultString
             textCalcView.text.clear()
         }
@@ -172,7 +177,10 @@ class MainActivity : AppCompatActivity() {
                     else
                         throw RuntimeException("Função desconhecida: " + func)
                 } else {
-                    throw RuntimeException("Caractere inesperado: " + ch.toChar())
+                    if (ch == (-1).toChar())
+                        throw RuntimeException("Final inesperado da expressão")
+                    else
+                        throw RuntimeException("Caractere inesperado: " + ch)
                 }
                 if (eat('^')) x = Math.pow(x, parseFactor()) // potência
                 return x

@@ -2,21 +2,97 @@ package br.ufpe.cin.android.calculadora
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setButtonListeners()
     }
 
+    private fun setButtonListeners() {
+        // Put views to variables making it accessible in the listener lambda functions.
+        val textCalcView = text_calc
+        val textInfoView = text_info
 
+        // Set equal button listener
+        btn_Equal.setOnClickListener {
+            val expression = textCalcView.text.toString()
+            val result = eval(expression)
+            val resultString = "$expression = $result"
+            textInfoView.text = resultString
+            textCalcView.text.clear()
+        }
+        // Set clear button listener
+        btn_Clear.setOnClickListener {
+            textCalcView.text.clear()
+        }
+        // Set character buttons, those are the buttons that simply append their character to textCalcView
+        btn_0.setOnClickListener {
+            textCalcView.append("0")
+        }
+        btn_1.setOnClickListener {
+            textCalcView.append("1")
+        }
+        btn_2.setOnClickListener {
+            textCalcView.append("2")
+        }
+        btn_3.setOnClickListener {
+            textCalcView.append("3")
+        }
+        btn_4.setOnClickListener {
+            textCalcView.append("4")
+        }
+        btn_5.setOnClickListener {
+            textCalcView.append("5")
+        }
+        btn_6.setOnClickListener {
+            textCalcView.append("6")
+        }
+        btn_7.setOnClickListener {
+            textCalcView.append("7")
+        }
+        btn_8.setOnClickListener {
+            textCalcView.append("8")
+        }
+        btn_9.setOnClickListener {
+            textCalcView.append("9")
+        }
+        btn_Divide.setOnClickListener {
+            textCalcView.append("/")
+        }
+        btn_Multiply.setOnClickListener {
+            textCalcView.append("*")
+        }
+        btn_Subtract.setOnClickListener {
+            textCalcView.append("-")
+        }
+        btn_Add.setOnClickListener {
+            textCalcView.append("+")
+        }
+        btn_Power.setOnClickListener {
+            textCalcView.append("^")
+        }
+        btn_Dot.setOnClickListener {
+            textCalcView.append(".")
+        }
+        btn_LParen.setOnClickListener {
+            textCalcView.append("(")
+        }
+        btn_RParen.setOnClickListener {
+            textCalcView.append(")")
+        }
+    }
     //Como usar a função:
     // eval("2+2") == 4.0
     // eval("2+3*4") = 14.0
     // eval("(2+3)*4") = 20.0
     //Fonte: https://stackoverflow.com/a/26227947
-    fun eval(str: String): Double {
+    private fun eval(str: String): Double {
         return object : Any() {
             var pos = -1
             var ch: Char = ' '

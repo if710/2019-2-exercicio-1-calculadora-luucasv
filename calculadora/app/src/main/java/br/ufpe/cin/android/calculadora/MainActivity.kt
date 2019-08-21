@@ -5,15 +5,37 @@ import android.os.Bundle
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+// Key for the text_info state, it is used to save the state when there is a config change
+const val TEXT_INFO_STATE_KEY = "textInfo"
 
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        restoreState(savedInstanceState)
         setButtonListeners()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(TEXT_INFO_STATE_KEY, text_info.text.toString())
+        super.onSaveInstanceState(outState)
+    }
+
+    /**
+     * Restores saved state, used when there is a config change
+     */
+    private fun restoreState(savedInstanceState: Bundle?) {
+        // Restore text info value from saved state when a config change occurs
+        // we don't need to do the same for text calc because it already saves its states between config changes
+        if (savedInstanceState?.containsKey(TEXT_INFO_STATE_KEY) == true) {
+            text_info.text = savedInstanceState.getString(TEXT_INFO_STATE_KEY)
+        }
+    }
+
+    /**
+     * Sets listeners for all buttons in the layout.
+     */
     private fun setButtonListeners() {
         // Put views to variables making it accessible in the listener lambda functions.
         val textCalcView = text_calc
